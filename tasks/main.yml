@@ -1,0 +1,16 @@
+---
+
+- validate:
+    schema:
+      type: object
+      properties:
+        command:
+          type: string
+          enum:
+            - harden
+      required:
+        - command
+    instance: "{{ ssh }}"
+
+- include_tasks: '{{ ssh.command }}.yml'
+  when: ssh.command != 'dependency'

@@ -1,0 +1,82 @@
+---
+
+- validate:
+    schema:
+      type: object
+      properties:
+        source_host:
+          type: string
+          format: hostname
+          default: "{{ inventory_hostname }}"
+        target_host:
+          type: string
+          format: hostname
+          default: localhost
+      required:
+        - source_host
+        - target_host
+    instance: "{{ ssh }}"
+  register: ssh_validated
+
+- set_fact:
+    ssh_v: "{{ ssh_validated.result }}"
+
+- name: "Wait for the SSH port to be ready"
+  wait_for:
+    connect_timeout: 10
+    host: "{{ ssh_v.source_host }}"
+    port: 22
+    sleep: 5
+    state: started
+    timeout: 60
+  delegate_to: "{{ ssh_v.target_host }}"
+
+- name: "Get the ip address for the host"
+  shell: "host {{ ssh_v.source_host }} | awk '/has address/ { print $4 }'"
+  changed_when: no
+  register: ssh_add_known_host_ip
+  delegate_to: "{{ ssh_v.target_host }}"
+  
+- name: "Call ssh-keyscan to get host key"
+  shell: |
+    ssh-keyscan -t ecdsa -p 22 {{ ssh_v.source_host }} 2>/dev/null
+  args:
+    executable: /bin/bash
+  register: ssh_keyscan_host_return
+  changed_when: no
+  delegate_to: "{{ ssh_v.target_host }}"
+
+- name: "Fail if no host key was retreived"
+  fail:
+    msg: "No host key was retreived from {{ ssh_v.source_host }}"
+  when:
+    ssh_keyscan_host_return.stdout == ""
+
+- name: "Add host {{ ssh_v.source_host }} to known_hosts on {{ ssh_v.target_host }}"
+  known_hosts:
+    name: "{{ ssh_v.source_host }}"
+    key: "{{ ssh_keyscan_host_return.stdout }}"
+    state: present
+  delegate_to: "{{ ssh_v.target_host }}"
+
+- name: "Call ssh-keyscan to get ip key"
+  shell: |
+    ssh-keyscan -t ecdsa -p 22 {{ ssh_add_known_host_ip.stdout }} 2>/dev/null
+  args:
+    executable: /bin/bash
+  register: ssh_add_known_host_ip_keyscan
+  changed_when: no
+  delegate_to: "{{ ssh_v.target_host }}"
+
+- name: "Fail if no ip key was retreived"
+  fail:
+    msg: "No ip key was retreived from {{ ssh_add_known_host_ip.stdout }}"
+  when:
+    ssh_add_known_host_ip_keyscan.stdout == ""
+
+- name: "Add ip key to ssh known_hosts"
+  known_hosts:
+    name: "{{ ssh_add_known_host_ip.stdout }}"
+    key: "{{ ssh_add_known_host_ip_keyscan.stdout }}"
+    state: present
+  delegate_to: "{{ ssh_v.target_host }}"
