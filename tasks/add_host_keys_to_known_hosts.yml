@@ -1,0 +1,42 @@
+---
+
+- validate:
+    schema:
+      type: object
+      properties:
+        delegate_to:
+          type: string
+          default: "{{ inventory_hostname }}"
+        host:
+          type: string
+        key_type:
+          type: string
+          enum:
+            - dsa
+            - ecdsa
+            - ed25519
+            - rsa
+      required:
+        - delegate_to
+        - key_type
+    instance: "{{ ssh }}"
+  register: ssh_validated
+
+- set_fact:
+    ssh_v: "{{ ssh_validated.result }}"
+
+- name: "Get host keys for hostname and ip address"
+  ssh_keyscan:
+    host: "{{ ssh_v.host }}"
+    key_type: "{{ ssh_v.key_type }}"
+  register: ssh_keyscan
+
+- debug:
+    var: ssh_keyscan
+
+- name: "Add {{ ssh_keyscan.result | length }} host keys to known_hosts file on {{ ssh_v.delegate_to }}"
+  known_hosts:
+    name: "{{ item.host }}"
+    key: "{{ item.key }}"
+  delegate_to: localhost
+  loop: "{{ ssh_keyscan.result }}"
