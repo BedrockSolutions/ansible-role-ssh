@@ -34,6 +34,8 @@ class ActionModule(ActionBase):
 
         keyscan_args = ["ssh-keyscan", "-p", str(port)]
 
+        print("key_type: " + key_type)
+
         # if key_type:
         #     keyscan_args.extend(["-t ", key_type])
 
@@ -53,8 +55,8 @@ class ActionModule(ActionBase):
                 raise AnsibleError("no host key found for " + host)
 
             results.append({
-                host: host,
-                key: key,
+                "host": host,
+                "key": key,
             })
 
         print(results)
