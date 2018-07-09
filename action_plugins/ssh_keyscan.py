@@ -43,7 +43,7 @@ class ActionModule(ActionBase):
                 args=keyscan_args + [host],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
-                check=True,
+                #check=True,
                 universal_newlines=True,
             )
 
