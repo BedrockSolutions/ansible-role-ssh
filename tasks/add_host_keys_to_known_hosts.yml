@@ -38,5 +38,5 @@
   known_hosts:
     name: "{{ item.host }}"
     key: "{{ item.key }}"
-  delegate_to: "{{ delegate_to }}"
+  delegate_to: "{{ ssh_v.delegate_to }}"
   loop: "{{ ssh_keyscan.result }}"
