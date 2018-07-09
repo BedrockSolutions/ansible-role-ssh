@@ -50,6 +50,6 @@
         sftp_enabled: '{{ ssh_v.sftp_enabled }}'
         ssh_allow_agent_forwarding: '{{ ssh_v.allow_agent_forwarding }}'
         ssh_allow_tcp_forwarding: "{{ ssh_v.allow_tcp_forwarding }}"
-        ssh_allow_users: '{{ ssh_v.allowed_users | join(' ') }}'
+        ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
         ssh_permit_tunnel: "{{ ssh_v.permit_tunnel }}"
   become: yes
