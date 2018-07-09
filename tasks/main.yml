@@ -8,6 +8,7 @@
           type: string
           enum:
             - add_host_keys_to_known_hosts
+            - authorize_keys
             - harden
       required:
         - command
