@@ -32,7 +32,7 @@ class ActionModule(ActionBase):
         if include_ip_address_keys:
             hosts.extend(socket.gethostbyname(hosts[0]).split(' '))
 
-        keyscan_args = ["ssh-keyscan", "-p " + port]
+        keyscan_args = ["ssh-keyscan", "-p " + str(port)]
 
         if key_type:
             keyscan_args.append("-t " + key_type)
