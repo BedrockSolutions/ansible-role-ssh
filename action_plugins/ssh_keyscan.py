@@ -34,8 +34,8 @@ class ActionModule(ActionBase):
 
         keyscan_args = ["ssh-keyscan", "-p", str(port)]
 
-        if key_type:
-            keyscan_args.extend(["-t ", key_type])
+        # if key_type:
+        #     keyscan_args.extend(["-t ", key_type])
 
         results = []
         for host in hosts:
@@ -43,7 +43,7 @@ class ActionModule(ActionBase):
                 args=keyscan_args + [host],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
-                #check=True,
+                check=True,
                 universal_newlines=True,
             )
 
