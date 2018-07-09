@@ -30,17 +30,17 @@ class ActionModule(ActionBase):
         include_ip_address_keys = action_vars.pop("include_ip_address_keys", True)
 
         if include_ip_address_keys:
-            hosts.extend(socket.gethostbyname(hosts[0]).split(' '))
+            hosts.extend(socket.gethostbyname(hosts[0]).split(" "))
 
-        keyscan_args = ["ssh-keyscan", "-p " + str(port)]
+        keyscan_cmd = "ssh-keyscan -p " + str(port)
 
         if key_type:
-            keyscan_args.append("-t " + key_type)
+            keyscan_cmd += " -t " + key_type
 
         results = []
         for host in hosts:
             completed_keyscan = subprocess.run(
-                args=keyscan_args + [host],
+                args=[keyscan_cmd + " " + host],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.DEVNULL,
                 #check=True,
