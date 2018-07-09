@@ -54,8 +54,6 @@ class ActionModule(ActionBase):
                 "key": key,
             })
 
-        print(results)
-
         return_value = super(ActionModule, self).run(tmp, task_vars)
         return_value["result"] = results
 
