@@ -32,10 +32,10 @@ class ActionModule(ActionBase):
         if include_ip_address_keys:
             hosts.extend(socket.gethostbyname(hosts[0]).split(" "))
 
-        keyscan_args = ["ssh-keyscan"] #, "-p " + str(port)]
+        keyscan_args = ["ssh-keyscan", "-p", str(port)]
 
-        # if key_type:
-        #     keyscan_args.append("-t " + key_type)
+        if key_type:
+            keyscan_args.extend(["-t ", key_type])
 
         results = []
         for host in hosts:
@@ -60,7 +60,6 @@ class ActionModule(ActionBase):
         print(results)
 
         return_value = super(ActionModule, self).run(tmp, task_vars)
-        del return_value["invocation"]["module_args"]
         return_value["result"] = results
 
         return return_value
