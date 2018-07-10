@@ -25,7 +25,7 @@
 - set_fact:
     ssh_v: "{{ ssh_validated.result }}"
 
-- name: "Get host keys for hostname and ip address"
+- name: "Get host keys for {{ ssh_v.host }}"
   ssh_keyscan:
     host: "{{ ssh_v.host }}"
     key_type: "{{ ssh_v.key_type }}"
