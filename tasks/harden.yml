@@ -52,4 +52,6 @@
         ssh_allow_tcp_forwarding: "{{ ssh_v.allow_tcp_forwarding }}"
         ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
         ssh_permit_tunnel: "{{ ssh_v.permit_tunnel }}"
+  tags:
+    - ssh_harden
   become: yes

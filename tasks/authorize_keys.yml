@@ -30,3 +30,5 @@
     exclusive: "{{ ssh_v.exclusive }}"
     key: "{{ ssh_v.authorized_keys | join('\n') }}"
     user: '{{ ssh_v.user }}'
+  tags:
+    - ssh_authorize_keys

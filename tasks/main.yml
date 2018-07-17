@@ -15,4 +15,6 @@
     instance: "{{ ssh }}"
 
 - include_tasks: '{{ ssh.command }}.yml'
+  tags:
+    - ssh
   when: ssh.command != 'dependency'
