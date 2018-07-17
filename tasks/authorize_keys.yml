@@ -1,34 +1,35 @@
 ---
 
-- validate:
-    schema:
-      type: object
-      properties:
-        authorized_keys:
-          type: array
-          items:
-            type: string
-          minLength: 1
-        exclusive:
-          type: boolean
-          default: true
-        user:
-          type: string
-          default: ubuntu
-      required:
-        - authorized_keys
-        - exclusive
-        - user
-    instance: "{{ ssh }}"
-  register: ssh_validated
+- block:
+    - validate:
+        schema:
+          type: object
+          properties:
+            authorized_keys:
+              type: array
+              items:
+                type: string
+              minLength: 1
+            exclusive:
+              type: boolean
+              default: true
+            user:
+              type: string
+              default: ubuntu
+          required:
+            - authorized_keys
+            - exclusive
+            - user
+        instance: "{{ ssh }}"
+      register: ssh_validated
 
-- set_fact:
-    ssh_v: "{{ ssh_validated.result }}"
+    - set_fact:
+        ssh_v: "{{ ssh_validated.result }}"
 
-- name: "Authorize {{ ssh_v.authorized_keys | length }} ssh keys for user {{ ssh_v.user }}"
-  authorized_key:
-    exclusive: "{{ ssh_v.exclusive }}"
-    key: "{{ ssh_v.authorized_keys | join('\n') }}"
-    user: '{{ ssh_v.user }}'
+    - name: "Authorize {{ ssh_v.authorized_keys | length }} ssh keys for user {{ ssh_v.user }}"
+      authorized_key:
+        exclusive: "{{ ssh_v.exclusive }}"
+        key: "{{ ssh_v.authorized_keys | join('\n') }}"
+        user: '{{ ssh_v.user }}'
   tags:
     - ssh_authorize_keys
