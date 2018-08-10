@@ -5,14 +5,14 @@
         schema:
           type: object
           properties:
-            exclusive:
-              type: boolean
-              default: false
-            keys:
+            authorized_keys:
               type: array
               items:
                 type: string
               minLength: 1
+            exclusive:
+              type: boolean
+              default: false
             user:
               type: string
               default: ubuntu
