@@ -7,10 +7,10 @@
           properties:
             allow_agent_forwarding:
               type: boolean
-              default: true
+              default: false
             allow_tcp_forwarding:
               type: boolean
-              default: true
+              default: false
             allowed_users:
               type: array
               items:

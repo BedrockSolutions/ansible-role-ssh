@@ -7,7 +7,7 @@
           properties:
             exclusive:
               type: boolean
-              default: true
+              default: false
             keys:
               type: array
               items:

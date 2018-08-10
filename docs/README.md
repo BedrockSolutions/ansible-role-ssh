@@ -79,7 +79,7 @@ Adds one or more keys in the `<user>/.ssh/authorized_keys` file.
 keys file.
 
     * type: boolean
-    * default: `true`
+    * default: `false`
 
 * __`keys`:__ A list containing the public keys to add. At least one key
 is required.
@@ -94,7 +94,7 @@ is required.
 
 #### Example
 
-Add a key to the keys file of user `foo`: 
+Add a key to the keys file of user `foo`, and remove all other keys: 
 
 ```yaml
 - import_task:
@@ -102,9 +102,59 @@ Add a key to the keys file of user `foo`:
   vars:
     ssh:
       command: authorize_keys
-      exclusive: false
+      exclusive: true
       keys:
         - ssh-ed25519 ************************ foo@bar.com
       user: foo
+```
+
+### __harden__
+
+Hardens the ssh client and daemon. This command leverages the awesome
+[dev-sec/ansible-ssh-hardening](https://github.com/dev-sec/ansible-ssh-hardening)
+role to perform the bulk of the hardening operations.
+
+#### Arguments
+
+* __`allow_agent_forwarding`:__ Toggles the AllowAgentForwarding setting.
+
+    * type: boolean
+    * default: `false`
+
+* __`allow_tcp_forwarding`:__ Toggles the AllowTcpForwarding setting.
+
+    * type: boolean
+    * default: `false`
+
+* __`allowed_users`:__ A list of users allowed to connect via SSH.
+
+    * type: list
+    * default: `['ubuntu']`
+    * min length: 1
+
+* __`permit_tunnel`:__ Toggles the PermitTunnel setting.
+
+    * type: boolean
+    * default: `false`
+
+* __`sftp_enabled`:__ Enables or disables SFTP access. If false, use SCP
+instead.
+
+    * type: boolean
+    * default: `true`
+
+#### Example
+
+Harden the client and daemon of a remote machine:
+
+```yaml
+- import_task:
+    name: bedrock.ssh
+  vars:
+    ssh:
+      command: harden
+      allowed_users:
+        - billy
+        - bob
 ```
 
