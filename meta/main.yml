@@ -1,10 +1,17 @@
 ---
 
 dependencies:
-  - name: jcheroske.common
+  - name: bedrock.common
     scm: git
     src: https://github.com/BedrockSolutions/ansible-role-common.git
     vars:
       common:
         command: dependency
+    version: master
+
+  - name: dev-sec.ssh-hardening
+    scm: git
+    src: https://github.com/BedrockSolutions/ansible-ssh-hardening.git
+    vars:
+      ssh_dependency: yes
     version: master
