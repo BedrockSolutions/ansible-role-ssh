@@ -17,8 +17,8 @@
               type: string
               default: ubuntu
           required:
+            - authorized_keys
             - exclusive
-            - keys
             - user
         instance: "{{ ssh }}"
       register: ssh_validated
