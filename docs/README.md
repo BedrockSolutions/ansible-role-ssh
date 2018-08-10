@@ -5,6 +5,14 @@ Ansible role that contains SSH-related tasks and handers.
 A prettier version of this documentation is located at 
 https://bedrocksolutions.github.io/ansible-role-ssh
  
+* Commands
+  * [authorize_keys](#authorize_keys)
+  * [harden](#harden)
+  * [known_hosts](#known_hosts)
+  
+* Handlers
+  * [ssh_restart](#ssh_restart)
+
 ## Installation
 
 To use `bedrock.ssh` in another role, create the file 
@@ -16,7 +24,7 @@ dependencies:
     scm: git
     src: https://github.com/BedrockSolutions/ansible-role-ssh.git
     vars:
-      common:
+      ssh:
         command: dependency
     version: master
 ```
@@ -61,19 +69,42 @@ or
 
 ## Commands
 
-### __controller_reset_connection__
+### __authorize_keys__
 
-Resets the connection between the controller and a target machine.
-Subsequent tasks will establish a new SSH login. This is useful when,
-for example, the SSH user is added to a new group and a fresh login is
-necessary to pick up the new group's privileges.
+Adds one or more keys in the `<user>/.ssh/authorized_keys` file.
+
+#### Arguments
+
+* __`exclusive`:__ Whether to remove all other non-specified keys from the
+keys file.
+
+    * type: boolean
+    * default: `true`
+
+* __`keys`:__ A list containing the public keys to add. At least one key
+is required.
+
+    * type: list
+    * min length: 1
+
+* __`user`:__ The username whose keys file will be modified.
+
+    * type: string
+    * default: `ubuntu`
 
 #### Example
 
+Add a key to the keys file of user `foo`: 
+
 ```yaml
 - import_task:
-    name: bedrock.common
+    name: bedrock.ssh
   vars:
-    common:
-      command: controller_reset_connection
+    ssh:
+      command: authorize_keys
+      exclusive: false
+      keys:
+        - ssh-ed25519 ************************ foo@bar.com
+      user: foo
 ```
+
