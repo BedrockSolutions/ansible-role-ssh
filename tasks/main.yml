@@ -17,5 +17,7 @@
 
     - include_tasks: '{{ ssh.command }}.yml'
       when: ssh.command != 'dependency'
+      tags:
+        - "ssh_{{ ssh.command }}"
   tags:
     - ssh

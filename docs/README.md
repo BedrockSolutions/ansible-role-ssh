@@ -71,7 +71,7 @@ or
 
 ### __authorize_keys__
 
-Adds one or more keys in the `<user>/.ssh/authorized_keys` file.
+Adds one or more keys to the `<user>/.ssh/authorized_keys` file.
 
 #### Arguments
 
@@ -157,4 +157,24 @@ Harden the client and daemon of a remote machine:
         - billy
         - bob
 ```
+
+### __known_hosts__
+
+Adds a given machine's host keys to the `.ssh/known_hosts` file of the
+current user.
+
+There are two main scenarios where this is useful:
+
+1) Add the host keys of a newly created machine to the Ansible controller.
+
+2) Add host keys from one machine to another machine, to preconfigure an
+SSH connection.
+
+#### Arguments
+
+* __`delegate_to`:__ The machine hosting the `known_hosts` file to be edited.
+
+    * type: string
+    * default: `{{ inventory_hostname }}`
+    
 

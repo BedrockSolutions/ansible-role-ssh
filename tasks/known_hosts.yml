@@ -19,6 +19,7 @@
                 - rsa
           required:
             - delegate_to
+            - host
             - key_type
         instance: "{{ ssh }}"
       register: ssh_validated
