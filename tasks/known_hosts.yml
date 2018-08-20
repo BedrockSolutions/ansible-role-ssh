@@ -19,7 +19,7 @@
                 - rsa
             path:
               oneOf:
-                - type: null
+                - type: "null"
                 - type: string
               default: null
           required:
