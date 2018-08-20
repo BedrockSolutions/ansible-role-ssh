@@ -190,7 +190,7 @@ SSH connection.
       - ed25519
       - rsa
 
-* __`path`:__ The path to the `known_hosts` file to edit.
+* __`path`:__ The path to the `known_hosts` file that's being edited.
 
     * type: string
     * default: `~/.ssh/known_hosts`
