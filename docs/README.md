@@ -145,7 +145,7 @@ instead.
 
 #### Example
 
-Harden the client and daemon of a remote machine:
+Harden the SSH client and daemon of a remote machine:
 
 ```yaml
 - import_task:
@@ -172,9 +172,54 @@ SSH connection.
 
 #### Arguments
 
-* __`delegate_to`:__ The machine hosting the `known_hosts` file to be edited.
+* __`delegate_to`:__ The machine with the `known_hosts` file to be edited.
 
     * type: string
     * default: `{{ inventory_hostname }}`
     
+* __`host`:__ The machine that will have its host keys added.
+
+    * type: string
+
+* __`key_type`:__ The SSH key type to obtain from the `host`.
+
+    * type: string
+    * enum:
+      - dsa
+      - ecdsa
+      - ed25519
+      - rsa
+
+* __`path`:__ The path to the `known_hosts` file to edit.
+
+    * type: string
+    * default: `~/.ssh/known_hosts`
+
+#### Examples
+
+Add the current remote machine's host keys to the ansible controller's
+`known_hosts` file:
+
+```yaml
+- import_task:
+    name: bedrock.ssh
+  vars:
+    ssh:
+      command: known_hosts
+      delegate_to: localhost
+      host: "{{ inventory_hostname }}"
+      key_type: ed25519
+```
+
+Add GitHub's host keys to a remote server:
+
+```yaml
+- import_task:
+    name: bedrock.ssh
+  vars:
+    ssh:
+      command: known_hosts
+      host: github.com
+      key_type: rsa
+```
 
