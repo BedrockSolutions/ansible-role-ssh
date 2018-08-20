@@ -1,58 +1,55 @@
 ---
 
+- validate:
+    schema:
+      type: object
+      properties:
+        allow_agent_forwarding:
+          type: boolean
+          default: false
+        allow_tcp_forwarding:
+          type: boolean
+          default: false
+        allowed_users:
+          type: array
+          items:
+            type: string
+          minLength: 1
+          default:
+            - ubuntu
+        permit_tunnel:
+          type: boolean
+          default: false
+        sftp_enabled:
+          type: boolean
+          default: true
+      required:
+        - allow_agent_forwarding
+        - allow_tcp_forwarding
+        - allowed_users
+        - permit_tunnel
+        - sftp_enabled
+    instance: "{{ ssh }}"
+  register: ssh_validated
+
+- set_fact:
+    ssh_v: "{{ ssh_validated.result }}"
+
 - block:
-    - validate:
-        schema:
-          type: object
-          properties:
-            allow_agent_forwarding:
-              type: boolean
-              default: false
-            allow_tcp_forwarding:
-              type: boolean
-              default: false
-            allowed_users:
-              type: array
-              items:
-                type: string
-              minLength: 1
-              default:
-                - ubuntu
-            permit_tunnel:
-              type: boolean
-              default: false
-            sftp_enabled:
-              type: boolean
-              default: true
-          required:
-            - allow_agent_forwarding
-            - allow_tcp_forwarding
-            - allowed_users
-            - permit_tunnel
-            - sftp_enabled
-        instance: "{{ ssh }}"
-      register: ssh_validated
+    # It seems like the user account is locked initially but the locked state is not enforced.
+    # If PAM is then disabled, we will be locked out. The harding disables PAM
+    - name: 'Unlock the user account'
+      user:
+        name: '{{ ansible_user }}'
+        password: '*'
 
-    - set_fact:
-        ssh_v: "{{ ssh_validated.result }}"
-
-    - block:
-        # It seems like the user account is locked initially but the locked state is not enforced.
-        # If PAM is then disabled, we will be locked out. The harding disables PAM
-        - name: 'Unlock the user account'
-          user:
-            name: '{{ ansible_user }}'
-            password: '*'
-
-        - name: 'Harden ssh client and server'
-          import_role:
-            name: dev-sec.ssh-hardening
-          vars:
-            sftp_enabled: '{{ ssh_v.sftp_enabled }}'
-            ssh_allow_agent_forwarding: '{{ ssh_v.allow_agent_forwarding }}'
-            ssh_allow_tcp_forwarding: "{{ ssh_v.allow_tcp_forwarding }}"
-            ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
-            ssh_permit_tunnel: "{{ ssh_v.permit_tunnel }}"
-      become: yes
-  tags:
-    - ssh_harden
+    - name: 'Harden ssh client and server'
+      import_role:
+        name: dev-sec.ssh-hardening
+      vars:
+        sftp_enabled: '{{ ssh_v.sftp_enabled }}'
+        ssh_allow_agent_forwarding: '{{ ssh_v.allow_agent_forwarding }}'
+        ssh_allow_tcp_forwarding: "{{ ssh_v.allow_tcp_forwarding }}"
+        ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
+        ssh_permit_tunnel: "{{ ssh_v.permit_tunnel }}"
+  become: yes
