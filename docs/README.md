@@ -184,11 +184,7 @@ SSH connection.
 * __`key_type`:__ The SSH key type to obtain from the `host`.
 
     * type: string
-    * enum:
-      - dsa
-      - ecdsa
-      - ed25519
-      - rsa
+    * enum: `['dsa','ecdsa','ed25519','rsa']`
 
 * __`path`:__ The path to the `known_hosts` file that's being edited.
 
