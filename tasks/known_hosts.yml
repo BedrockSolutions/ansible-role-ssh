@@ -38,11 +38,11 @@
         key_type: "{{ ssh_v.key_type }}"
       register: ssh_keyscan
 
-- debug:
-  var: ssh_keyscan
+    - debug:
+      var: ssh_keyscan
 
-- debug:
-  var: ssh_v
+    - debug:
+      var: ssh_v
 
     - name: "Add {{ ssh_keyscan.result | length }} host keys to known_hosts file on {{ ssh_v.delegate_to }}"
       known_hosts:
