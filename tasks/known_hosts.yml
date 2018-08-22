@@ -17,11 +17,11 @@
                 - ecdsa
                 - ed25519
                 - rsa
-            path:
-              oneOf:
-                - type: "null"
-                - type: string
-              default: null
+#            path:
+#              oneOf:
+#                - type: "null"
+#                - type: string
+#              default: null
           required:
             - delegate_to
             - host
@@ -42,7 +42,7 @@
       known_hosts:
         name: "{{ item.host }}"
         key: "{{ item.key }}"
-        path: "{{ ssh_v.path }}"
+#        path: "{{ ssh_v.path }}"
       delegate_to: "{{ ssh_v.delegate_to }}"
       loop: "{{ ssh_keyscan.result }}"
   tags:
