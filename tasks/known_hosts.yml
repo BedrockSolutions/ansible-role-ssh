@@ -48,7 +48,7 @@
       known_hosts:
         name: "{{ item.host }}"
         key: "{{ item.key }}"
-        path: "{[ ssh_v.path }}"
+#        path: "{[ ssh_v.path }}"
       delegate_to: "{{ ssh_v.delegate_to }}"
       loop: "{{ ssh_keyscan.result }}"
   tags:
