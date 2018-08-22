@@ -186,11 +186,6 @@ SSH connection.
     * type: string
     * enum: `['dsa','ecdsa','ed25519','rsa']`
 
-* __`path`:__ The path to the `known_hosts` file that's being edited.
-
-    * type: string
-    * default: `'{{ ansible_user }}/.ssh/known_hosts'`
-
 #### Examples
 
 Add the current remote machine's host keys to the ansible controller's

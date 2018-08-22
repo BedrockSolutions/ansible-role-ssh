@@ -17,11 +17,11 @@
                 - ecdsa
                 - ed25519
                 - rsa
-            path:
-              oneOf:
-                - type: "null"
-                - type: string
-              default: null
+#            path:
+#              oneOf:
+#                - type: "null"
+#                - type: string
+#              default: null
           required:
             - delegate_to
             - host
