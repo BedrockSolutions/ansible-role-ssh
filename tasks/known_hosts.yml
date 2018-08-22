@@ -39,10 +39,10 @@
       register: ssh_keyscan
 
     - debug:
-      var: ssh_keyscan
+        var: ssh_keyscan
 
     - debug:
-      var: ssh_v
+        var: ssh_v
 
     - name: "Add {{ ssh_keyscan.result | length }} host keys to known_hosts file on {{ ssh_v.delegate_to }}"
       known_hosts:
