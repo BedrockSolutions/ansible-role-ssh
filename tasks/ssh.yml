@@ -1,0 +1,20 @@
+---
+
+- block:
+    - validate:
+        schema:
+          type: object
+          properties:
+            command:
+              type: string
+              enum:
+                - authorize_keys
+                - harden
+                - known_hosts
+          required:
+            - command
+        instance: "{{ ssh }}"
+
+    - include_tasks: '{{ ssh.command }}.yml'
+  tags:
+    - ssh

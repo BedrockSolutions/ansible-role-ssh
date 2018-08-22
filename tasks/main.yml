@@ -1,21 +1,4 @@
 ---
 
-- block:
-    - validate:
-        schema:
-          type: object
-          properties:
-            command:
-              type: string
-              enum:
-                - authorize_keys
-                - harden
-                - known_hosts
-          required:
-            - command
-        instance: "{{ ssh }}"
-
-    - include_tasks: '{{ ssh.command }}.yml'
-      when: ssh.command != 'dependency'
-  tags:
-    - ssh
+- include_tasks: ./ssh.yml
+  when (ssh not exists) or (command not in ssh) or (ssh.command != 'dependency')
