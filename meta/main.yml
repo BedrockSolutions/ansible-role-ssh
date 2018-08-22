@@ -11,7 +11,7 @@ dependencies:
 
   - name: dev-sec.ssh-hardening
     scm: git
-    src: https://github.com/BedrockSolutions/ansible-ssh-hardening.git
+    src: https://github.com/dev-sec/ansible-ssh-hardening.git
     vars:
       ssh_hardening_enabled: no
     version: master
