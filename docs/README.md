@@ -84,13 +84,13 @@ keys file.
 * __`keys`:__ A list containing the public keys to add. At least one key
 is required.
 
-    * type: list
-    * min length: 1
+    * type: list\<string\>
+    * min_length: 1
 
 * __`user`:__ The username whose keys file will be modified.
 
     * type: string
-    * default: `ubuntu`
+    * default: `'ubuntu'`
 
 #### Example
 
@@ -189,7 +189,7 @@ SSH connection.
 * __`path`:__ The path to the `known_hosts` file that's being edited.
 
     * type: string
-    * default: `~/.ssh/known_hosts`
+    * default: `'{{ ansible_user }}/.ssh/known_hosts'`
 
 #### Examples
 
@@ -219,3 +219,8 @@ Add GitHub's host keys to a remote server:
       key_type: rsa
 ```
 
+## Handlers
+
+### __ssh_restart__
+
+Restarts the SSH daemon
