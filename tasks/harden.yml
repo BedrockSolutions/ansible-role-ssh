@@ -5,12 +5,9 @@
         schema:
           type: object
           properties:
-            allow_agent_forwarding:
+            agent_forwarding_enabled:
               type: boolean
-              default: false
-            allow_tcp_forwarding:
-              type: boolean
-              default: false
+              default: no
             allowed_users:
               type: array
               items:
@@ -18,17 +15,16 @@
               minLength: 1
               default:
                 - ubuntu
-            permit_tunnel:
+            tun_device_forwarding_enabled:
               type: boolean
-              default: false
+              default: no
             sftp_enabled:
               type: boolean
-              default: true
+              default: yes
           required:
-            - allow_agent_forwarding
-            - allow_tcp_forwarding
+            - agent_forwarding_enabled
             - allowed_users
-            - permit_tunnel
+            - tun_device_forwarding_enabled
             - sftp_enabled
         instance: "{{ ssh }}"
       register: ssh_validated
@@ -49,10 +45,10 @@
             name: dev-sec.ssh-hardening
           vars:
             sftp_enabled: '{{ ssh_v.sftp_enabled }}'
-            ssh_allow_agent_forwarding: '{{ ssh_v.allow_agent_forwarding }}'
-            ssh_allow_tcp_forwarding: "{{ ssh_v.allow_tcp_forwarding }}"
+            ssh_allow_agent_forwarding: '{{ ssh_v.agent_forwarding_enabled }}'
+            ssh_allow_tcp_forwarding: yes # does not decrease security
             ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
-            ssh_permit_tunnel: "{{ ssh_v.permit_tunnel }}"
+            ssh_permit_tunnel: "{{ ssh_v.tun_device_forwarding_enabled }}"
       become: yes
   tags:
     - ssh_harden

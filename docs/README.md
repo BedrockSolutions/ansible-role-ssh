@@ -116,12 +116,7 @@ role to perform the bulk of the hardening operations.
 
 #### Arguments
 
-* __`allow_agent_forwarding`:__ Toggles the AllowAgentForwarding setting.
-
-    * type: boolean
-    * default: `false`
-
-* __`allow_tcp_forwarding`:__ Toggles the AllowTcpForwarding setting.
+* __`agent_forwarding_enabled`:__ Toggles the AllowAgentForwarding setting.
 
     * type: boolean
     * default: `false`
@@ -132,7 +127,7 @@ role to perform the bulk of the hardening operations.
     * default: `['ubuntu']`
     * min length: 1
 
-* __`permit_tunnel`:__ Toggles the PermitTunnel setting.
+* __`tun_device_forwarding_enabled`:__ Toggles the PermitTunnel setting.
 
     * type: boolean
     * default: `false`
