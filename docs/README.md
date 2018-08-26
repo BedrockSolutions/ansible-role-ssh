@@ -136,7 +136,7 @@ role to perform the bulk of the hardening operations.
 instead.
 
     * type: boolean
-    * default: `true`
+    * default: `false`
 
 #### Example
 
