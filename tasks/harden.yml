@@ -20,7 +20,7 @@
               default: no
             sftp_enabled:
               type: boolean
-              default: yes
+              default: no
           required:
             - agent_forwarding_enabled
             - allowed_users
