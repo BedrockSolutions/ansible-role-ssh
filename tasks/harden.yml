@@ -20,7 +20,7 @@
               default: no
             sftp_enabled:
               type: boolean
-              default: no
+              default: yes # Ansible just works better over sftp than scp
           required:
             - agent_forwarding_enabled
             - allowed_users
