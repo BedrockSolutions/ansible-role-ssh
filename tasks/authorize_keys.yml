@@ -8,7 +8,7 @@
             authorized_keys:
               type: object
               patternProperties:
-                "^[\w]+$":
+                "^\w+$":
                   type: array
                   items:
                     type: string
