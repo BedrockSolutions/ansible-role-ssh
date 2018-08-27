@@ -71,7 +71,7 @@ or
 
 ### __authorize_keys__
 
-Adds one or more keys to the `<user>/.ssh/authorized_keys` file.
+Adds one or more keys to one or more `<user>/.ssh/authorized_keys` files.
 
 #### Arguments
 
@@ -81,16 +81,12 @@ keys file.
     * type: boolean
     * default: `false`
 
-* __`keys`:__ A list containing the public keys to add. At least one key
-is required.
+* __`authorized_keys`:__ A dict containing public keys to authorize. 
+The data structure is a mapping from a username to an array of keys.
 
-    * type: list\<string\>
-    * min_length: 1
-
-* __`user`:__ The username whose keys file will be modified.
-
-    * type: string
-    * default: `'ubuntu'`
+    * type: object
+    * key: username
+    * value: array of public keys
 
 #### Example
 
@@ -103,9 +99,9 @@ Add a key to the keys file of user `foo`, and remove all other keys:
     ssh:
       command: authorize_keys
       exclusive: true
-      keys:
-        - ssh-ed25519 ************************ foo@bar.com
-      user: foo
+      authorized_keys:
+        foo:
+          - ssh-ed25519 ************************ foo@bar.com
 ```
 
 ### __harden__
