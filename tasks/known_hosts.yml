@@ -32,9 +32,6 @@
     - set_fact:
         ssh_v: "{{ ssh_validated.result }}"
 
-    - name: "Wait for SSH on {{ ssh_v.host }}"
-      wait_for_connection:
-
     - name: "Get host keys for {{ ssh_v.host }}"
       ssh_keyscan:
         host: "{{ ssh_v.host }}"
