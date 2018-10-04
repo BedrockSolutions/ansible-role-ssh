@@ -48,6 +48,7 @@
             ssh_allow_agent_forwarding: '{{ ssh_v.agent_forwarding_enabled }}'
             ssh_allow_tcp_forwarding: yes # does not decrease security
             ssh_allow_users: "{{ ssh_v.allowed_users | join(' ') }}"
+            ssh_hardening_enabled: yes
             ssh_permit_tunnel: "{{ ssh_v.tun_device_forwarding_enabled }}"
       become: yes
   tags:
