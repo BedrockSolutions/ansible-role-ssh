@@ -46,6 +46,6 @@
 #        path: "{{ ssh_v.path }}"
       delegate_to: "{{ ssh_v.delegate_to }}"
       loop: "{{ ssh_keyscan.result }}"
-      when: ssh_keyscan.result
+      when: "'result' in ssh_keyscan"
   tags:
     - ssh_known_hosts
