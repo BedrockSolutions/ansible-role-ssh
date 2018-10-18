@@ -37,6 +37,7 @@
         host: "{{ ssh_v.host }}"
         key_type: "{{ ssh_v.key_type }}"
       register: ssh_keyscan
+      ignore_errors: yes
 
     - name: "Add {{ ssh_keyscan.result | length }} host keys to known_hosts file on {{ ssh_v.delegate_to }}"
       known_hosts:
@@ -45,5 +46,6 @@
 #        path: "{{ ssh_v.path }}"
       delegate_to: "{{ ssh_v.delegate_to }}"
       loop: "{{ ssh_keyscan.result }}"
+      when: ssh_keyscan.result
   tags:
     - ssh_known_hosts
