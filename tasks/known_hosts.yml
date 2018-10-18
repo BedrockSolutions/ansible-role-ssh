@@ -10,6 +10,9 @@
               default: "{{ inventory_hostname }}"
             host:
               type: string
+            ignore_errors:
+              type: boolean
+              default: no
             key_type:
               type: string
               enum:
@@ -25,6 +28,7 @@
           required:
             - delegate_to
             - host
+            - ignore_errors
             - key_type
         instance: "{{ ssh }}"
       register: ssh_validated
@@ -37,7 +41,7 @@
         host: "{{ ssh_v.host }}"
         key_type: "{{ ssh_v.key_type }}"
       register: ssh_keyscan
-      ignore_errors: yes
+      ignore_errors: "{{ ssh_v.ignore_errors }}"
 
     - name: "Add {{ ssh_keyscan.result | length }} host keys to known_hosts file on {{ ssh_v.delegate_to }}"
       known_hosts:
