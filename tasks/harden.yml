@@ -35,10 +35,10 @@
     - block:
         # It seems like the user account is locked initially but the locked state is not enforced.
         # If PAM is then disabled, we will be locked out. The harding disables PAM
-#        - name: 'Unlock the user account'
-#          user:
-#            name: '{{ ansible_user }}'
-#            password: '*'
+        - name: 'Unlock the user account'
+          user:
+            name: '{{ ansible_user }}'
+            password: '*'
 
         - name: 'Harden ssh client and server'
           import_role:
